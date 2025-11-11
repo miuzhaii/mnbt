@@ -85,6 +85,7 @@ foreach ($bf_data as $item) {
                   <td>
                     <div class="btn-group">
                         <a class="btn btn-xs btn-default" title="恢复数据" data-toggle="tooltip" onclick="databaserestore(user='<?php echo $user; ?>',filename='<?php echo $item['filename']; ?>')" data-original-title="恢复数据"><i class="mdi mdi-cloud-check"></i></a>
+                        <a class="btn btn-xs btn-default" title="下载备份" data-toggle="tooltip" onclick="databasedownload(filename='<?php echo $item['filename']; ?>',name='<?php echo $item['name']; ?>')" data-original-title="下载"><i class="mdi mdi-download"></i></a>
                       <a class="btn btn-xs btn-default ajax-get confirm" title="点我就删除了" onclick="databasedel(id='<?php echo $item['id']; ?>')" data-toggle="tooltip" data-original-title="删除"><i class="mdi mdi-window-close"></i></a>
                     </div>
                   </td>
@@ -221,6 +222,34 @@ function Delalldatabase()
     
     }
         
+    })
+}
+
+function databasedownload(filename, name)
+{
+    msloading('正在准备下载，请稍后...');  // 加载显示
+    let data = {};
+    data["gn"] = "databasedownload";
+    data["filename"] = filename;
+    data["name"] = name;
+    $.post('./ajax.php', data, function (date) {
+        var jsoe= JSON.parse(date);    
+        if(jsoe.qk == 1)
+        {
+            // 创建下载链接
+            var link = document.createElement('a');
+            link.href = jsoe.url;
+            link.download = name;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            msloadingde();  // 隐藏
+        }
+        else
+        {
+            msalert(4, jsoe.code, 3000);
+            msloadingde();  // 隐藏
+        }
     })
 }
 </script>

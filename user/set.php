@@ -36,20 +36,20 @@ $cert=$DB->get_row("SELECT * FROM MN_bt WHERE btdh='$ssbt' limit 1");
               </thead>
               <tbody>
         <?php 
-	include("./class.php");
-	$ap_sz=0;
-	$btipe=($cert['ptl']=='true'?'https':'http').'://'.$cert['btip'].':'.$cert['btdk'];
-	$btkeye=$cert['btmy'];
-	$api = new bt_api_set($btipe,$btkeye);
-	$r_data = $api->btapi_ym($zjid);
-	
-	foreach($r_data as $are){
-	if($are!='' && $are['name']!=$yhc['sqldz']){
-	$ap_sz++;
-	?>
+    include("./class.php");
+    $ap_sz=0;
+    $btipe=($cert['ptl']=='true'?'https':'http').'://'.$cert['btip'].':'.$cert['btdk'];
+    $btkeye=$cert['btmy'];
+    $api = new bt_api_set($btipe,$btkeye);
+    $r_data = $api->btapi_ym($zjid);
+    
+    foreach($r_data as $are){
+    if($are!='' && $are['name']!=$yhc['sqldz']){
+    $ap_sz++;
+    ?>
                 <tr>
                 <td><div class="row col-xs-7" style="display:none" id="ydk<?=$ap_sz?>"><input type="text" class="form-control input-sm" id="ynk<?=$ap_sz?>" onblur="intay(<?=$ap_sz?>)"/></div>
-    			<a href="http://<?=$are['name'].':'.$are['port']?>" class="text-success" id="ymk<?=$ap_sz?>"><?=$are['name']?></a></td>
+                <a href="http://<?=$are['name'].':'.$are['port']?>" class="text-success" id="ymk<?=$ap_sz?>"><?=$are['name']?></a></td>
                   <td><?=$are['port']?></td>
                   <td>
                     <div class="btn-group">
@@ -85,11 +85,11 @@ $cert=$DB->get_row("SELECT * FROM MN_bt WHERE btdh='$ssbt' limit 1");
                     <ul class="dropdown-menu">
                     <?php
                     $qbza=$cert['btdh'];
-                    	$bym_list=$DB->query("SELECT * FROM MN_ym WHERE btdh='$qbza' and qk='true' order by id desc limit 9999");
+                        $bym_list=$DB->query("SELECT * FROM MN_ym WHERE btdh='$qbza' and qk='true' order by id desc limit 9999");
                     while($res = $DB->fetch($bym_list))
-				{
-				echo '<li><a href="#!" class="dropdown-item" onclick="ymqh('."'".$res['url']."'".','.$res['jg'].')">'.$res['url'].'<br/>价格：'.$res['jg'].'元<br/>简介：'.$res['js'].'</a></li>';
-				}
+                {
+                echo '<li><a href="#!" class="dropdown-item" onclick="ymqh('."'".$res['url']."'".','.$res['jg'].')">'.$res['url'].'<br/>价格：'.$res['jg'].'元<br/>简介：'.$res['js'].'</a></li>';
+                }
                     ?>
                     </ul>
                     </div>
@@ -121,13 +121,13 @@ $cert=$DB->get_row("SELECT * FROM MN_bt WHERE btdh='$ssbt' limit 1");
                     <h5><b>您可以随时修改您域名的前缀！</b></h5><br/>
                     <h4 align="center">是否确认支付？</h4>
                <form action="pay.php" method="post" target="_blank" role="form">
-        	     <input type="hidden" name="urla" id="urla"/>
-        	     <input type="hidden" name="urlb" id="urlb"/>
-        	     <input type="hidden" name="yzdip" id="yzdip"/>
-        	     <input type="hidden" name="pay_lx" value="ymgm"/>
-        	     <input type="hidden" name="urlzml" value="/"/>
-        	     
-	  <label for="web_site_logo">请选择支付方式</label>
+                 <input type="hidden" name="urla" id="urla"/>
+                 <input type="hidden" name="urlb" id="urlb"/>
+                 <input type="hidden" name="yzdip" id="yzdip"/>
+                 <input type="hidden" name="pay_lx" value="ymgm"/>
+                 <input type="hidden" name="urlzml" value="/"/>
+                 
+      <label for="web_site_logo">请选择支付方式</label>
           <div class="example-box">
               <div class="row">
             <label class="lyear-radio radio-inline radio-primary col">
@@ -213,9 +213,10 @@ if(inp_qk){
 msalert(3,'请完成当前编辑后再试！',2000);
 return;
 }
-var wz=url.indexOf('.');
-var qz=url.substring(0,wz);
-var qzh=url.substring(wz);
+// 改进的域名分割逻辑，支持中文域名
+var parts = url.split('.');
+var qz = parts[0];  // 前缀部分
+var qzh = parts.slice(1).join('.');  // 剩余部分（包括后缀）
 document.getElementById("ydk"+urlidsz).style.display="block";
 document.getElementById("ynk"+urlidsz).value = qz;
 document.getElementById("ymk"+urlidsz).innerHTML = qzh;
@@ -373,7 +374,7 @@ $cert=$DB->get_row("SELECT * FROM MN_bt WHERE btdh='$ssbt' limit 1");
             <tbody id="urllist">
                 <tr>
                 <td><div class="row col-xs-7" style="display:none" id="ydk"><input type="text" class="form-control input-sm" id="ynk"/></div>
-    			<a href="#!" class="text-success" id="ymk">正在获取域名中，请稍后...</a></td>
+                <a href="#!" class="text-success" id="ymk">正在获取域名中，请稍后...</a></td>
                   <td>80</td>
                   <td>
                     <div class="btn-group">
@@ -386,20 +387,20 @@ $cert=$DB->get_row("SELECT * FROM MN_bt WHERE btdh='$ssbt' limit 1");
           </table>
           <!--style="display:none"-->
         <div class="custom-control custom-radio custom-control-inline">
-	        <input type="radio" id="urladdms" name="urladdms" class="custom-control-input" checked>
-	        <label class="custom-control-label" for="urladdms">自定义添加</label>
-	      </div>
-	      <div class="custom-control custom-radio custom-control-inline">
-	        <input type="radio" id="urladdms2" name="urladdms" class="custom-control-input">
-	        <label class="custom-control-label" for="urladdms2">本站二级域名</label>
-	      </div>
-	      
+            <input type="radio" id="urladdms" name="urladdms" class="custom-control-input" checked>
+            <label class="custom-control-label" for="urladdms">自定义添加</label>
+          </div>
+          <div class="custom-control custom-radio custom-control-inline">
+            <input type="radio" id="urladdms2" name="urladdms" class="custom-control-input">
+            <label class="custom-control-label" for="urladdms2">本站二级域名</label>
+          </div>
+          
           <div class="input-group mb-3">
             <input type="text" class="form-control" name="url" id="url" placeholder="请在此输入域名">
             <div class="input-group-append">
               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="ymqhq" style="display:none">请选择域名<span class="caret"></span></button>
             <ul class="dropdown-menu">
-			<li><a href="#!" class="dropdown-item" onclick="">a.a<br/>价格：元<br/>简介：</a></li>
+            <li><a href="#!" class="dropdown-item" onclick="">a.a<br/>价格：元<br/>简介：</a></li>
             </ul>
               <button type="button" class="btn btn-default btn-primary" id="tjurl">添加</button>
             </div>
@@ -435,12 +436,12 @@ $cert=$DB->get_row("SELECT * FROM MN_bt WHERE btdh='$ssbt' limit 1");
                     <h5><b>您可以随时修改您域名的前缀！</b></h5><br/>
                     <h4 align="center">是否确认支付？</h4>
                <form action="pay.php" method="post" target="_blank" role="form">
-        	     <input type="hidden" name="urla" id="urla"/>
-        	     <input type="hidden" name="urlb" id="urlb"/>
-        	     <input type="hidden" name="urlzml" id="urlzml" value="/"/>
-        	     <input type="hidden" name="pay_lx" value="ymgm"/>
-        	     
-	  <label for="web_site_logo">请选择支付方式</label>
+                 <input type="hidden" name="urla" id="urla"/>
+                 <input type="hidden" name="urlb" id="urlb"/>
+                 <input type="hidden" name="urlzml" id="urlzml" value="/"/>
+                 <input type="hidden" name="pay_lx" value="ymgm"/>
+                 
+      <label for="web_site_logo">请选择支付方式</label>
           <div class="example-box">
               <div class="row">
             <label class="lyear-radio radio-inline radio-primary col">
@@ -612,7 +613,7 @@ if(yer.indexOf('请选择域名')!='-1'){msalert(3,'请选择域名和输入前�
 if(bl_jg>0){
 var p = /^[0-9a-zA-Z]{1,24}$/;
 if(!p.test($("#url").val())){msalert(3,'只能输入数字和英文！',2000);return;}
-$('#exampleModal').modal();		//弹出弹窗
+$('#exampleModal').modal();        //弹出弹窗
 zfs();
 
 return;
@@ -731,17 +732,17 @@ $cert=$DB->get_row("SELECT * FROM MN_bt WHERE btdh='$ssbt' limit 1");
               </thead>
               <tbody>
         <?php 
-	include("./class.php");
-	$btipe=($cert['ptl']=='true'?'https':'http').'://'.$cert['btip'].':'.$cert['btdk'];
-	$btkeye=$cert['btmy'];
-	$api = new bt_api($btipe,$btkeye);
-	$r_data = $api->GetLogs($zjid);
-	if($cert['btos']=='2'){
-	$idsz=$r_data;
-	}else{
-	$idsz=$r_data[$yhc['sqldz']];
-	}
-	foreach($idsz as $are){?>
+    include("./class.php");
+    $btipe=($cert['ptl']=='true'?'https':'http').'://'.$cert['btip'].':'.$cert['btdk'];
+    $btkeye=$cert['btmy'];
+    $api = new bt_api($btipe,$btkeye);
+    $r_data = $api->GetLogs($zjid);
+    if($cert['btos']=='2'){
+    $idsz=$r_data;
+    }else{
+    $idsz=$r_data[$yhc['sqldz']];
+    }
+    foreach($idsz as $are){?>
 
                 <tr>
                   <td><?=$are['name']?></td>
@@ -863,12 +864,12 @@ $cert=$DB->get_row("SELECT * FROM MN_bt WHERE btdh='$ssbt' limit 1");
         <div class="card-body">
         
     <?php 
-	include("./class.php");
-	$btipe=($cert['ptl']=='true'?'https':'http').'://'.$cert['btip'].':'.$cert['btdk'];
-	$btkeye=$cert['btmy'];
-	$api = new bt_api($btipe,$btkeye);
-	$r_data = $api->GetLogseb($zjid);
-	?>
+    include("./class.php");
+    $btipe=($cert['ptl']=='true'?'https':'http').'://'.$cert['btip'].':'.$cert['btdk'];
+    $btkeye=$cert['btmy'];
+    $api = new bt_api($btipe,$btkeye);
+    $r_data = $api->GetLogseb($zjid);
+    ?>
 
                 <div class="form-group">
                   <textarea  type="text" class="form-control" rows="5" name="url" id="url" placeholder="请在此输入文档"><?=$r_data?></textarea>
@@ -921,13 +922,13 @@ elseif($set=="nginx")
         <div class="card-body">
         
     <?php 
-	include("./class.php");
-	$btipe=($cert['ptl']=='true'?'https':'http').'://'.$cert['btip'].':'.$cert['btdk'];
-	$btkeye=$cert['btmy'];
-	$api = new bt_api($btipe,$btkeye);
-	$name = $yhc['sqldz'];
-	$r_data = $api->Getnginx($name);
-	?>
+    include("./class.php");
+    $btipe=($cert['ptl']=='true'?'https':'http').'://'.$cert['btip'].':'.$cert['btdk'];
+    $btkeye=$cert['btmy'];
+    $api = new bt_api($btipe,$btkeye);
+    $name = $yhc['sqldz'];
+    $r_data = $api->Getnginx($name);
+    ?>
 
                 <div class="form-group">
                   <textarea  type="text" class="form-control" rows="20" name="url" id="url" placeholder="请在此输入文档"><?php echo ($r_data['data']) ;?></textarea>
@@ -940,13 +941,13 @@ elseif($set == "mysqlcz")
 {
     include("./class.php");
     $cert=$DB->get_row("SELECT * FROM MN_bt WHERE btdh='$ssbt' limit 1");
-	$btipe=($cert['ptl']=='true'?'https':'http').'://'.$cert['btip'].':'.$cert['btdk'];
-	$btkeye=$cert['btmy'];
-	$api = new bt_api($btipe,$btkeye);
-	$name = $yhc['sqluser'];
+    $btipe=($cert['ptl']=='true'?'https':'http').'://'.$cert['btip'].':'.$cert['btdk'];
+    $btkeye=$cert['btmy'];
+    $api = new bt_api($btipe,$btkeye);
+    $name = $yhc['sqluser'];
     $r_data = $api->GetDatabaseAccess($name);
-	?>
-	<!--对话框-->
+    ?>
+    <!--对话框-->
 <script type="text/javascript" src="../imsetes/js/jquery-confirm/jquery-confirm.min.js"></script>
 <script type="text/javascript" src="../imsetes/js/bootstrap-table/bootstrap-table.min.js"></script>
 <script type="text/javascript" src="../imsetes/js/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
@@ -1036,12 +1037,12 @@ $api = new bt_api($btipe,$btkeye);
 //php版本获取
 $apist = new bt_api_set($btipe,$btkeye);
 $r_data = $apist->btapi_listphp();
-unset($r_data[0]);			//由于纯静态通过APi切换后再切换为其他PHP版本部分宝塔会报错，等待宝塔官方修复这个问题，所以暂时关闭纯静态选项
-unset($r_data[1]);			//关闭自定义选项
+unset($r_data[0]);            //由于纯静态通过APi切换后再切换为其他PHP版本部分宝塔会报错，等待宝塔官方修复这个问题，所以暂时关闭纯静态选项
+unset($r_data[1]);            //关闭自定义选项
 $php_version = $apist->btapi_phpnowz($yhc['sqldz'])['phpversion'];
 ?>
 
-	<!--对话框-->
+    <!--对话框-->
 <script type="text/javascript" src="../imsetes/js/jquery-confirm/jquery-confirm.min.js"></script>
 <script type="text/javascript" src="../imsetes/js/bootstrap-table/bootstrap-table.min.js"></script>
 <script type="text/javascript" src="../imsetes/js/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
@@ -1117,18 +1118,18 @@ $cert=$DB->get_row("SELECT * FROM MN_bt WHERE btdh='$ssbt' limit 1");
         <div class="card-body">
         
     <?php 
-	include("./class.php");
-	$btipe=($cert['ptl']=='true'?'https':'http').'://'.$cert['btip'].':'.$cert['btdk'];
-	$btkeye=$cert['btmy'];
-	$api = new bt_api($btipe,$btkeye);
-	$r_daoe = $api->GetLogswr($yhc['sqldz']);
-	if($cert['btos']=='1'){
-	$r_data = $api->GetLogswt('/www/server/panel/vhost/rewrite/'.$yhc['sqldz'].'.conf');
-	}else{
-	$api = new win_bt_api($btipe,$btkeye);
-	$r_data = $api->wjt_hqdq($yhc['sqldz']);
-	}
-	?>
+    include("./class.php");
+    $btipe=($cert['ptl']=='true'?'https':'http').'://'.$cert['btip'].':'.$cert['btdk'];
+    $btkeye=$cert['btmy'];
+    $api = new bt_api($btipe,$btkeye);
+    $r_daoe = $api->GetLogswr($yhc['sqldz']);
+    if($cert['btos']=='1'){
+    $r_data = $api->GetLogswt('/www/server/panel/vhost/rewrite/'.$yhc['sqldz'].'.conf');
+    }else{
+    $api = new win_bt_api($btipe,$btkeye);
+    $r_data = $api->wjt_hqdq($yhc['sqldz']);
+    }
+    ?>
 <div class="form-group">
                 <select class="form-control" id="btdh" name="btdh" size="1" onchange="_sel(this.options[this.options.selectedIndex])">
                 <?php
@@ -1218,16 +1219,16 @@ elseif($set=='fdl')
                 <label for="message-text" class="control-label">许可域名</label>
                   <textarea  type="text" class="form-control" rows="10" name="ymlist1" id="ymlist1" placeholder="请在此输入许可域名"></textarea>
                   </div>
-                  	<div class="form-group">
-                  	<label class="btn-block" for="web_site_status">允许空HTTP_REFERER请求开关</label>
-	  <div class="col-xs-6">
+                      <div class="form-group">
+                      <label class="btn-block" for="web_site_status">允许空HTTP_REFERER请求开关</label>
+      <div class="col-xs-6">
           <div class="custom-control custom-switch">
             <input type="checkbox" class="custom-control-input" id="nullhttp">
             <label class="custom-control-label" for="nullhttp"></label>
           </div>
                  
-	  <label class="btn-block" for="web_site_status">防盗链开关</label>
-	  <div class="col-xs-6">
+      <label class="btn-block" for="web_site_status">防盗链开关</label>
+      <div class="col-xs-6">
           <div class="custom-control custom-switch">
             <input type="checkbox" class="custom-control-input" id="fdlkg" for="fdlkg"></label>
             <label class="custom-control-label" for="fdlkg"></label>
@@ -1332,14 +1333,14 @@ elseif($set == "fzjh")
             <div class="form-group">
                 <label for="message-text" class="control-label">负载均衡</label>
                  <textarea  type="text" class="form-control" rows="10" name="ymlist1" id="ymlist1" placeholder="请输入要负载的网址,每个网址用,隔开"><?php
-	                include("./class.php");
-	                    $cert=$DB->get_row("SELECT * FROM MN_bt WHERE btdh='$ssbt' limit 1");
-	                $btipe=($cert['ptl']=='true'?'https':'http').'://'.$cert['btip'].':'.$cert['btdk'];
-	                $btkeye=$cert['btmy'];
-	                $api = new bt_api($btipe,$btkeye);
-	                $name = $yhc['sqldz'];
-	                $r_data = $api->Getnginx($name);
-	              //  echo($r_data['data']);
+                    include("./class.php");
+                        $cert=$DB->get_row("SELECT * FROM MN_bt WHERE btdh='$ssbt' limit 1");
+                    $btipe=($cert['ptl']=='true'?'https':'http').'://'.$cert['btip'].':'.$cert['btdk'];
+                    $btkeye=$cert['btmy'];
+                    $api = new bt_api($btipe,$btkeye);
+                    $name = $yhc['sqldz'];
+                    $r_data = $api->Getnginx($name);
+                  //  echo($r_data['data']);
                     $pattern = '/#######\s*(.*?)\s*########/s';
                     if (preg_match($pattern, $r_data['data'], $matches)) 
                     {
@@ -1379,9 +1380,9 @@ $logArray = explode("\n", $data);
 <div class="bg-white px-2">
     
   <div class="form-group">
-	  <label for="web_site_logo">nginx访问日志📢</label>
-	
-	    <textarea name="wzgg" rows="20" id="wzgg" class="form-control" placeholder="nginx访问日志"><?php 
+      <label for="web_site_logo">nginx访问日志📢</label>
+    
+        <textarea name="wzgg" rows="20" id="wzgg" class="form-control" placeholder="nginx访问日志"><?php 
         foreach($logArray as $nginx_list)
         {
             $pattern = '/"(.*?)".*\[(.*?)\]/';
@@ -1396,9 +1397,9 @@ $logArray = explode("\n", $data);
             echo $nginx_list;
             echo "\n";
         }
-	  ?>
-	  </textarea>
-	</div>
+      ?>
+      </textarea>
+    </div>
 </div>
 </div>
 </div>
@@ -1409,14 +1410,14 @@ elseif($set=='xgpass'){?>
 <div class="card-body">
 <h3 class="panel-title">修改密码</h3>
 <hr/>
-	<div class="form-group">
-	  <label for="message-text" class="control-label">新的FTP密码</label>
-	  <input type="text" name="webmm" id="webmm" placeholder="不修改请留空" class="form-control" required/>
-	</div><br/>
-	<div class="form-group">
-	  <label for="message-text" class="control-label">新的数据库密码</label>
-	  <input type="text" name="sqlmm" id="sqlmm" placeholder="不修改请留空" class="form-control" required/>
-	</div><br/>
+    <div class="form-group">
+      <label for="message-text" class="control-label">新的FTP密码</label>
+      <input type="text" name="webmm" id="webmm" placeholder="不修改请留空" class="form-control" required/>
+    </div><br/>
+    <div class="form-group">
+      <label for="message-text" class="control-label">新的数据库密码</label>
+      <input type="text" name="sqlmm" id="sqlmm" placeholder="不修改请留空" class="form-control" required/>
+    </div><br/>
           <button class="btn btn-primary form-control" type="button" onclick="xgmm()"><i class="mdi mdi-checkbox-marked-circle-outline"></i>确认修改</button>
 <small class="help-block"><strong><code>注意：FTP密码也是你的控制面板登陆密码，FTP密码修改后需重新登录控制面板</code></strong></small>
 </div>
@@ -1469,17 +1470,17 @@ $cert=$DB->get_row("SELECT * FROM MN_bt WHERE btdh='$ssbt' limit 1");
         <div class="card-body">
         
     <?php 
-	include("./class.php");
-	$btipe=($cert['ptl']=='true'?'https':'http').'://'.$cert['btip'].':'.$cert['btdk'];
-	$btkeye=$cert['btmy'];
-	if($cert['btos']=='1'){
-	$os_xt=$conf['hxi'].'/';
-	}else{
-	$os_xt=$conf['hxo'].'/';
-	}
-	$api = new bt_api($btipe,$btkeye);
-	$r_data = $api->yxmlrhq($yhc['btid'],$os_xt.$yhc['sqldz']);
-	?>
+    include("./class.php");
+    $btipe=($cert['ptl']=='true'?'https':'http').'://'.$cert['btip'].':'.$cert['btdk'];
+    $btkeye=$cert['btmy'];
+    if($cert['btos']=='1'){
+    $os_xt=$conf['hxi'].'/';
+    }else{
+    $os_xt=$conf['hxo'].'/';
+    }
+    $api = new bt_api($btipe,$btkeye);
+    $r_data = $api->yxmlrhq($yhc['btid'],$os_xt.$yhc['sqldz']);
+    ?>
 <div class="form-group">
                 <select class="form-control" id="btdh" name="btdh" size="1">
                 <?php

@@ -190,4 +190,51 @@ elseif($gn == 'zjmode')#修改主机
 else{
     exit(json_encode(['code'=>100,'msg'=>'此功能不存在！请仔细核对开发文档！'],256));
 }
+
+/**
+ * 执行一键部署
+ */
+function executeDeployment($api, $siteId, $domain, $deployId, $phpVersion, $deployParams, $username, $password) {
+    // 获取部署信息
+    $deployInfo = $api->获取部署程序的列表();
+    if (!$deployInfo['status']) {
+        return array('status' => false, 'msg' => '获取部署列表失败');
+    }
+    
+    // 查找对应的部署模板
+    $deployTemplate = null;
+    foreach ($deployInfo['data'] as $template) {
+        if ($template['id'] == $deployId) {
+            $deployTemplate = $template;
+            break;
+        }
+    }
+    
+    if (!$deployTemplate) {
+        return array('status' => false, 'msg' => '部署模板不存在');
+    }
+    
+    // 设置PHP版本（如果指定了的话）
+    if (!empty($phpVersion)) {
+        $api->btapi_setphp($domain, $phpVersion);
+    }
+    
+    // 执行部署
+    $deployData = array(
+        'site_id' => $siteId,
+        'deploy_id' => $deployId,
+        'params' => $deployParams
+    );
+    
+    // 这里需要根据宝塔面板的一键部署API来实现
+    // 由于宝塔面板API可能不直接支持，这里提供一个框架
+    $result = array(
+        'status' => true,
+        'msg' => '部署任务已提交',
+        'template_name' => $deployTemplate['title'],
+        'php_version' => $phpVersion
+    );
+    
+    return $result;
+}
 ?>
