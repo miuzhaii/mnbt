@@ -1,0 +1,1 @@
+<?php $mn_conf=array("url"=>"mf.mengnai.top","aet"=>"http","port"=>80,"install_wj"=>"api","xf"=>array("qk"=>0,"gne"=>"1,2,3"),"gs"=>array("qk"=>0,"gs"=>"无告示"));?>
