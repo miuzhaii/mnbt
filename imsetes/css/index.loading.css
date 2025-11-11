@@ -1,0 +1,66 @@
+/** ----------------------------------
+ * 页面加载loading
+ -------------------------------------- */
+.loading_upds {
+    background: #fff;
+    height: 100%;
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 999999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+.loading_upds .ctn-preloader{
+        padding-left: 15px;
+        padding-right: 15px;
+}
+.loading_upds .spinner {
+    animation: logo-spinner 3s infinite linear;
+    border-radius: 50%;
+    border: 3px solid #f1f6f8;
+    border-left-color: #114DC2;
+    border-top-color: #114DC2;
+    margin: 0 auto 0em auto;
+    position: absolute;
+    left: -40px;
+    right: -40px;
+    bottom: -40px;
+    top: -40px;
+}
+.loading_upds .spinner:before {
+    content: "";
+    width: 20px;
+    height: 20px;
+    border: 6px solid #fff;
+    box-shadow: 0 0 20px 0 rgba(4, 46, 56, 0.2);
+    background: #114DC2;
+    position: absolute;
+    right: 9px;
+    top: 20px;
+    border-radius: 50%;
+}
+.loading_upds .round_spinner {
+    border-width: 1px;
+    border-color: rgb(238, 243, 244);
+    border-style: solid;
+    border-radius: 50%;
+    background-color: rgb(253, 253, 253);
+    box-shadow: 0 0 100px 0 rgba(4, 46, 56, 0.14);
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin: 40px auto 40px;
+}
+@keyframes logo-spinner {
+    to {
+        transform: rotateZ(360deg);
+    }
+}
