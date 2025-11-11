@@ -70,11 +70,14 @@ MN宝塔是一个基于PHP/MySQL的虚拟主机管理系统，集成了宝塔面
 ```bash
 git clone https://github.com/your-username/mnbt.git
 cd mnbt
-cp config.sample.php config.php
-cp MPHX/SQ.sample.php MPHX/SQ.php
-# 编辑config.php配置数据库信息
-# 导入database.sql到数据库
+# 访问 http://yourdomain.com/install/ 开始安装
 ```
+
+安装向导会自动：
+- 检查PHP环境和扩展
+- 引导配置数据库连接
+- 自动生成配置文件
+- 导入数据库表结构
 
 详细安装步骤请查看 [安装指南](INSTALL.md)
 

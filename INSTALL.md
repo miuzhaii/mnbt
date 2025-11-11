@@ -16,45 +16,11 @@ git clone https://github.com/your-username/mnbt.git
 cd mnbt
 ```
 
-### 2. 配置数据库
+### 2. 上传到Web服务器
 
-复制配置文件模板：
+将代码上传到你的Web服务器目录（如 `/www/wwwroot/yourdomain.com/`）
 
-```bash
-cp config.sample.php config.php
-```
-
-编辑 `config.php`，填写数据库信息：
-
-```php
-$dbconfig=array(
-    'host' => 'localhost',      // 数据库服务器
-    'port' => 3306,             // 数据库端口
-    'user' => 'your_db_user',   // 数据库用户名
-    'pwd' => 'your_db_pass',    // 数据库密码
-    'dbname' => 'your_db_name', // 数据库名
-);
-```
-
-### 3. 导入数据库
-
-使用提供的SQL文件创建数据库表结构：
-
-```bash
-mysql -u your_db_user -p your_db_name < database.sql
-```
-
-### 4. 配置授权码
-
-```bash
-cp MPHX/SQ.sample.php MPHX/SQ.php
-```
-
-编辑 `MPHX/SQ.php`：
-- 免费版：保持 `$authcode='无需验证';`
-- 正式版：填写购买的授权码
-
-### 5. 设置目录权限
+### 3. 设置目录权限
 
 ```bash
 chmod -R 755 .
@@ -62,7 +28,19 @@ chmod -R 777 filecx
 chmod -R 777 imsetes/upload_logo
 ```
 
-### 6. 配置宝塔面板
+### 4. 访问安装向导
+
+在浏览器中访问：`http://yourdomain.com/install/`
+
+安装向导会自动：
+1. **检查环境** - 检测PHP版本和必需扩展
+2. **配置数据库** - 填写数据库连接信息
+3. **生成配置文件** - 自动创建 `config.php` 和 `MPHX/SQ.php`
+4. **导入数据库** - 自动执行 `install.sql` 创建数据表
+5. **设置管理员** - 默认账号 `admin` / 密码 `123456`（安装后请立即修改）
+6. **配置授权码** - 免费版无需授权码
+
+### 5. 配置宝塔面板（安装后）
 
 在宝塔面板中：
 1. 进入"面板设置" -> "API接口"
@@ -70,14 +48,13 @@ chmod -R 777 imsetes/upload_logo
 3. 添加服务器IP到白名单
 4. 复制API密钥
 
-### 7. 访问安装
+### 6. 登录系统
 
-首次访问管理后台，系统会引导你完成初始化设置：
-
-1. 访问 `http://yourdomain.com/admin/`
-2. 创建管理员账户
-3. 配置宝塔面板连接信息
-4. 完成初始化
+1. 访问管理后台：`http://yourdomain.com/admin/`
+2. 使用默认账号登录：`admin` / `123456`
+3. **立即修改默认密码**
+4. 在后台配置宝塔面板连接信息
+5. 开始使用
 
 ## 配置说明
 
@@ -129,13 +106,18 @@ chmod -R 777 filecx
 4. **定期备份**：定期备份数据库和关键配置文件
 5. **更新密钥**：定期更新SYS_KEY（在MPHX/function.php中）
 
-## 从GitHub安装后的清理
+## 注意事项
 
-如果你从GitHub克隆了代码，以下文件需要配置：
+1. **config.sample.php 和 MPHX/SQ.sample.php**
+   - 这些是配置文件模板，仅供参考
+   - **安装向导会自动生成真实的配置文件**，无需手动复制
 
-1. `config.php` - 数据库配置（从 config.sample.php 复制）
-2. `MPHX/SQ.php` - 授权码（从 MPHX/SQ.sample.php 复制）
-3. `filecx/` - 用户上传目录（自动创建）
+2. **安装后删除 install 目录**
+   - 安装完成后建议删除 `/install/` 目录，防止重复安装
+
+3. **filecx 目录**
+   - 用于存储用户上传的程序包
+   - 已包含示例程序（彩虹外链网盘）供测试使用
 
 ## 升级说明
 
