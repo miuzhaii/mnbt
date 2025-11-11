@@ -7,6 +7,7 @@
 # 用户上传的程序包和源码
 /filecx/*
 !/filecx/.gitkeep
+!/filecx/b7b04562/
 
 # 用户自定义Logo
 /imsetes/upload_logo/*.png
@@ -16,6 +17,7 @@
 # 临时文件和导出文件
 *.tmp
 *.zip
+!filecx/b7b04562/*.zip
 *.tar.gz
 /admin/gxwj.zip
 
