@@ -247,50 +247,56 @@ chmod -R 777 imsetes/upload_logo
    - ✅ **修复严重安全漏洞**：移除硬编码的固定密钥 `'MNBT'`
    - ✅ **随机密钥生成**：每个站点使用独立的64位随机密钥
    - ✅ **配置化存储**：密钥存储在 `config.php` 而非源代码中
-   - ✅ **向后兼容**：自动兼容未迁移的旧系统
+   - ✅ **向后兼容**：自动兼容旧系统（未配置密钥时使用默认值）
 
-2. **密钥迁移工具**
-   - ✅ 提供 `migrate_key.php` 密钥迁移工具
-   - ✅ 自动重新加密所有敏感数据（主机密码、数据库密码、邮箱密码）
-   - ✅ 友好的 Web 界面，一键完成迁移
-   - ✅ 迁移后提醒删除工具文件
-
-3. **一键登录密码解密修复**
+2. **一键登录密码解密修复**
    - ✅ 修复了 `/user/idcdl.php` 一键登录功能中加密密码验证失败的问题
    - ✅ 添加了 `mn_decrypt()` 函数对提交的加密密码进行解密
-   - ✅ 解决了前端提交的 `MNENC:` 格式密码无法与数据库明文密码匹配的问题
+   - ✅ 解决了前端提交的 `MNENC:` 格式密码无法与数据库密码匹配的问题
    - ✅ 确保一键登录功能正常工作
 
 #### 🔧 技术细节
 
 **密钥管理：**
 - **旧方案问题**：所有站点使用相同的硬编码密钥 `'MNBT'`，源码泄露即密码泄露
-- **新方案**：每个站点安装时生成独立的64位随机密钥，存储在 `config.php`
+- **新方案**：每个站点使用独立的64位随机密钥，存储在 `config.php`
 - **加密算法**：AES-256-CBC 对称加密，使用 SHA256 派生密钥
 - **密钥长度**：64个十六进制字符（256位）
 
-**迁移说明：**
-- 现有用户需访问 `http://yourdomain.com/migrate_key.php` 执行迁移
-- 迁移工具会自动使用旧密钥解密，用新密钥重新加密所有数据
-- 迁移完成后**必须立即删除** `migrate_key.php` 文件
+**配置方法：**
+在 `config.php` 中添加 `sys_key` 配置项：
+```php
+$dbconfig = array(
+    'host' => 'localhost',
+    'port' => 3306,
+    'user' => 'database_user',
+    'pwd' => 'database_password',
+    'dbname' => 'database_name',
+    'sys_key' => '生成的64位随机密钥', // 新增
+);
+```
+
+**生成随机密钥：**
+```bash
+php -r "echo bin2hex(openssl_random_pseudo_bytes(32));"
+```
 
 #### 📁 涉及文件
 
 - `/MPHX/common.php` - 从 config.php 动态读取 SYS_KEY
-- `/migrate_key.php` - 密钥迁移工具（使用后删除）
+- `/config.php.example` - 配置文件模板和说明
 - `/user/idcdl.php` - 一键登录接口密码解密处理
-- `/config.php` - 添加 sys_key 配置项
+- `/SECURITY.md` - 完整的安全配置指南
 
-#### ⚠️ 重要提示
+#### ⚠️ 安全建议
 
-**现有用户必须执行迁移：**
-1. 访问 `http://yourdomain.com/migrate_key.php`
-2. 点击"开始迁移"按钮
-3. 等待迁移完成
-4. **立即删除 migrate_key.php 文件**
+**新安装用户：**
+1. 复制 `config.php.example` 为 `config.php`
+2. 填写数据库配置
+3. 生成随机密钥并填入 `sys_key`
+4. 设置文件权限：`chmod 640 config.php`
 
-**新用户：**
-- 安装程序会自动生成随机密钥，无需手动操作
+**详细说明请查看：** [安全配置指南 (SECURITY.md)](SECURITY.md)
 
 ---
 
