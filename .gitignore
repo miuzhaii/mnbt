@@ -1,0 +1,46 @@
+# 数据库配置文件（包含密码和密钥）
+/config.php
+/config.php.backup
+
+# 授权码配置
+/MPHX/SQ.php
+
+# 用户上传的程序包和源码
+/filecx/*
+!/filecx/.gitkeep
+!/filecx/b7b04562/
+
+# 用户自定义Logo
+/imsetes/upload_logo/*.png
+/imsetes/upload_logo/*.jpg
+/imsetes/upload_logo/*.gif
+
+# 临时文件和导出文件
+*.tmp
+*.zip
+!filecx/b7b04562/*.zip
+*.tar.gz
+/admin/gxwj.zip
+
+# 日志文件
+*.log
+
+# IDE和编辑器文件
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 操作系统文件
+.DS_Store
+Thumbs.db
+
+# 备份文件
+*.bak
+*.backup
+*_backup.*
+
+# 测试文件
+/test/
+/mnbt-main/
