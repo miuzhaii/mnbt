@@ -181,7 +181,7 @@ MN宝塔是一个基于 PHP/MySQL 开发的虚拟主机管理系统，通过深�
 
 ## 🚀 快速开始
 
-### 方法一：自动安装（推荐）
+### 安装步骤
 
 ```bash
 # 1. 克隆项目到Web目录
@@ -193,26 +193,47 @@ chmod -R 755 .
 chmod -R 777 filecx
 chmod -R 777 imsetes/upload_logo
 
-# 3. 访问网站自动跳转安装
-浏览器访问：http://yourdomain.com/
-系统会自动检测并跳转到安装向导
+# 3. 复制配置文件
+cp config.sample.php config.php
+
+# 4. 生成随机加密密钥
+php -r "echo bin2hex(openssl_random_pseudo_bytes(32));"
+
+# 5. 编辑 config.php
+# - 填写数据库配置
+# - 将上一步生成的密钥填入 sys_key
+# - 保存文件
+
+# 6. 导入数据库（如果有 install.sql）
+mysql -u username -p database_name < install.sql
+
+# 7. 设置配置文件权限
+chmod 640 config.php
 ```
 
-### 安装向导功能
+### 配置说明
 
-安装向导会引导您完成以下步骤：
+编辑 `config.php`，填写以下信息：
 
-1. ✅ **环境检测** - 自动检查PHP版本和必需扩展
-2. ✅ **数据库配置** - 填写数据库连接信息
-3. ✅ **自动部署** - 自动生成配置文件（config.php、MPHX/SQ.php）
-4. ✅ **数据库初始化** - 自动导入数据表结构
-5. ✅ **管理员设置** - 默认账号 `admin` / 密码 `123456`
+```php
+$dbconfig = array(
+    'host' => 'localhost',
+    'port' => 3306,
+    'user' => 'your_database_user',
+    'pwd' => 'your_database_password',
+    'dbname' => 'your_database_name',
+    'sys_key' => '生成的64位随机密钥', // 重要！
+);
+```
 
-> ⚠️ **安全提示**: 安装完成后请立即修改默认管理员密码！
+**⚠️ 安全提示：**
+- 每个站点必须使用不同的随机密钥
+- 妥善保管 `config.php` 文件
+- 安装完成后立即修改默认管理员密码（admin/123456）
 
-### 方法二：手动配置
+### 详细文档
 
-如需手动配置，请参考 [完整安装指南](INSTALL.md)
+完整的安装和配置说明请参考 [安装指南 (INSTALL.md)](INSTALL.md)
 
 ---
 
@@ -264,39 +285,19 @@ chmod -R 777 imsetes/upload_logo
 - **密钥长度**：64个十六进制字符（256位）
 
 **配置方法：**
-在 `config.php` 中添加 `sys_key` 配置项：
-```php
-$dbconfig = array(
-    'host' => 'localhost',
-    'port' => 3306,
-    'user' => 'database_user',
-    'pwd' => 'database_password',
-    'dbname' => 'database_name',
-    'sys_key' => '生成的64位随机密钥', // 新增
-);
-```
 
-**生成随机密钥：**
-```bash
-php -r "echo bin2hex(openssl_random_pseudo_bytes(32));"
-```
+1. 复制配置模板：`cp config.sample.php config.php`
+2. 生成随机密钥：`php -r "echo bin2hex(openssl_random_pseudo_bytes(32));"`
+3. 编辑 `config.php`，填写数据库信息和密钥
+4. 设置权限：`chmod 640 config.php`
 
 #### 📁 涉及文件
 
+- `/config.sample.php` - 配置文件模板（含密钥配置说明）
 - `/MPHX/common.php` - 从 config.php 动态读取 SYS_KEY
-- `/config.php.example` - 配置文件模板和说明
 - `/user/idcdl.php` - 一键登录接口密码解密处理
+- `/INSTALL.md` - 详细安装指南
 - `/SECURITY.md` - 完整的安全配置指南
-
-#### ⚠️ 安全建议
-
-**新安装用户：**
-1. 复制 `config.php.example` 为 `config.php`
-2. 填写数据库配置
-3. 生成随机密钥并填入 `sys_key`
-4. 设置文件权限：`chmod 640 config.php`
-
-**详细说明请查看：** [安全配置指南 (SECURITY.md)](SECURITY.md)
 
 ---
 

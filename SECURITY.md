@@ -72,7 +72,7 @@ if(isset($dbconfig['sys_key']) && !empty($dbconfig['sys_key'])) {
 
 ```bash
 # 复制配置模板
-cp config.php.example config.php
+cp config.sample.php config.php
 ```
 
 #### 步骤 2：生成随机密钥
